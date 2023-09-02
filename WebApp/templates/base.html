@@ -1,0 +1,189 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeNexus</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <title>{%block title%}{%endblock%} | TradeNexus </title>
+    <script src="https://kit.fontawesome.com/0d2d12aeec.js" crossorigin="anonymous"></script>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VCTYVTDT7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VCTYVTDT7Q');
+</script>
+<style>
+    /* Chatbox Styles */
+.chat-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: #fafafa;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: none; /* Initially hidden */
+    font-family: Arial, sans-serif;
+}
+
+.chat-header {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+.chat-body {
+    padding: 10px;
+    background-color: #fff;
+}
+
+.chat-body textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    resize: none;
+    font-size: 14px;
+}
+
+.chat-footer {
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #e6e6e6;
+}
+
+.chat-footer button {
+    padding: 5px 15px;
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.chat-footer button:hover {
+    background-color: #0056b3;
+}
+
+    /**/
+    :root {
+    --primary-color: #1E3D69;
+    --secondary-color: #7D4282;
+    --tertiary-color: #BC5299;
+    --quaternary-color: #C83E6A;
+    --highlight-color: #DE7015;
+    --accent-color: #F4A300;
+    --bright-accent: #86DDF3;
+    --white-color: #FFFFFF;
+}
+
+body {
+  background: linear-gradient(to right, var(--primary-color), var(--tertiary-color));
+
+}
+.navbar {
+background: linear-gradient(to right, #1E3D69, #7D4282);
+}
+
+#introCarousel {
+height: 50vh;
+min-height: 350px;
+}
+
+#introCarousel .carousel-inner img {
+height: 50vh;
+min-height: 350px;
+object-fit: cover;
+}
+footer {
+background: linear-gradient(45deg, #1E3D69, #7D4282);
+}
+
+footer a {
+transition: 0.3s;
+}
+
+footer a:hover {
+color: #F4A300;  /* Adjust the color as per your design */
+}
+
+footer h4 {
+margin-bottom: 20px;
+}
+
+.product-image {
+    max-width: 100%; /* This ensures the image doesn't overflow the card */
+    height: 285px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+
+</style>
+<body>
+    {%include 'header.html'%}
+    {%block content%}
+
+    {%endblock%}
+    {% include 'footer.html'%}
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // On send button click
+document.querySelector(".btn-info").addEventListener("click", function() {
+    let messageText = document.getElementById("textAreaExample2").value;
+
+    fetch("/send_message/", {  // Use the appropriate URL for your send_message view
+        method: "POST",
+        body: JSON.stringify({
+            receiver_id: CURRENT_RECEIVER_ID,  // You should have a way to identify the current chat's receiver ID
+            message_text: messageText
+        }),
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": CSRF_TOKEN  // Your CSRF token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            // Append message to chat-content div
+            // Refresh or add the new message div to the right side
+        }
+    });
+});
+
+</script>
+</html>

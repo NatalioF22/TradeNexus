@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{%load static%}
+{% block content %}
+   
+    <style>
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply the animation to the footer content when the page loads */
+        section .container {
+            animation: slideUp 0.8s forwards;
+        }
+        body {
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        h1, h3 {
+            font-family: 'Playfair Display', serif;
+            color: white;
+        }
+
+        section {
+            padding: 100px 0;
+            color:white;
+        }
+
+        .lead {
+            font-size: 1.5rem;
+            color: #777;
+            color:white;
+        }
+
+        h3 {
+            margin-top: 50px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            color:white;
+        }
+
+        footer {
+            background-color: #333;
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1 class="display-4">About TradeNexus</h1>
+                <p class="lead mb-5">Connecting Users, Products, and Profits</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Our Objective</h3>
+                <p>TradeNexus is not just another e-commerce platform. We're an ecosystem where users can list their products, and through our unique approach, we redirect others to the product link. Every time a product is purchased through a redirection, the user listing the product will gain a commission. It's a win-win for both product owners and users who share.</p>
+            </div>
+            <div class="col-lg-6">
+                <h3>Our Goal</h3>
+                <p>Our ambition at TradeNexus is two-fold. Firstly, we aim to help businesses advertise their products more effectively and increase their sales. Secondly, we provide a platform for our users to earn money in an easy and safe manner. By bridging the gap between advertisers and promoters, we're fostering a community of empowered individuals and thriving businesses.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{%endblock%}

@@ -1,0 +1,117 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .search-box {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 200px;
+    }
+
+    .user-card {
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .user-card img {
+        max-width: 150px;
+        border-radius: 50%;
+        margin: 15px;
+    }
+
+    .card-details {
+        padding: 15px;
+    }
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        margin: 15px;
+    }
+    
+    
+    
+</style>
+
+<div class="container mt-5 ">
+    <form method="get" class="mb-5">
+        <input class="search-box" type="text"  name="search" value="{{ query }}" placeholder="Search for users...">
+        <button type="submit" class="btn btn-info ">Search</button>
+    </form>
+    <div class="row">
+        {% for profile in page_obj %}
+        <div class="col-md-6">
+            <div class="user-card d-flex">
+                <!-- User Picture -->
+                {% if profile.profile_image %}
+                <div class="profile-pic" style="background-image: url('{{ profile.profile_image.url }}')"></div>
+                {% else %}
+                <div class="profile-pic" style="background-image: url('{% static "images/default_profile_img.png" %}')"></div>
+                {% endif %}
+                
+
+
+                <!-- User Details -->
+                <div class="card-details">
+                    <h4 class="mb-2"><a href="{% url 'profile' profile.user.username %}">{{ profile.user.username }}</a></h4>
+
+                    <p class="mb-1">{{ profile.profile_bio }}</p>
+                    <p class="mb-1"><strong>Email:</strong> {{ profile.user.email }}</p>
+                    <p class="mb-1"><strong>Address:</strong> {{ profile.address }}, {{ profile.city }}, {{ profile.get_state_display }}</p>
+                    <!-- Add more details as required -->
+                    {% if profile.website_link %}
+                    <a href="{{ profile.website_link }}" target="new" class="fa fa-link me-3" style="font-size:30px; text-decoration:none"></a>
+                    {% endif %}
+
+                    {% if profile.facebook_link %}
+                    <a href="{{ profile.facebook_link }}" target="new" style="font-size:30px; text-decoration:none"><i class="fa-brands fa-facebook"></i></a>
+                    {% endif %}
+                    {% if profile.instagram_link %}
+                    <a href="{{ profile.instagram_link }}" target="new" class="fa fa-instagram me-1" style="font-size:30px; text-decoration:none"></a>
+                    {% endif %}
+                    {% if profile.linkedIn_link %}
+                    <a href="{{ profile.linkedIn_link }}" target="new" class="fa fa-linkedin me-1" style="font-size:30px; text-decoration:none"></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and jQuery (Optional but might be required based on your project needs) -->
+
+{% endblock %}

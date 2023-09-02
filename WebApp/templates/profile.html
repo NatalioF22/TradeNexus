@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+{% if profile %}
+
+<style>
+    body{
+        background:#eee;
+    }
+    
+    .card{
+        border:none;
+    
+        position:relative;
+        overflow:hidden;
+        border-radius:8px;
+        cursor:pointer;
+    }
+    
+    .card:before{
+        
+        content:"";
+        position:absolute;
+        left:0;
+        top:0;
+        width:4px;
+        height:100%;
+        
+        transform:scaleY(1);
+        transition:all 0.5s;
+        transform-origin: bottom
+    }
+    
+    .card:after{
+        
+        content:"";
+        position:absolute;
+        left:0;
+        top:0;
+        width:4px;
+        height:100%;
+        
+        transform:scaleY(0);
+        transition:all 0.5s;
+        transform-origin: bottom
+    }
+    
+    .card:hover::after{
+        transform:scaleY(1);
+    }
+    
+    
+    .fonts{
+        font-size:11px;
+    }
+    
+    .social-list{
+        display:flex;
+        list-style:none;
+        justify-content:center;
+        padding:0;
+    }
+    
+    .social-list li{
+        padding:10px;
+        color:#8E24AA;
+        font-size:19px;
+    }
+    
+    
+    .buttons button:nth-child(1){
+           border:1px solid #8E24AA !important;
+           color:#8E24AA;
+           height:40px;
+    }
+    
+    .buttons button:nth-child(1):hover{
+           border:1px solid #8E24AA !important;
+           color:#fff;
+           height:40px;
+           background-color:#8E24AA;
+    }
+    
+    .buttons button:nth-child(2){
+           border:1px solid #8E24AA !important;
+           background-color:#8E24AA;
+           color:#fff;
+            height:40px;
+    }
+/* ... your other styles ... */
+
+.messages-dropdown {
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+    transition: max-height 0.4s ease-in-out;
+}
+
+.show-messages {
+    display: block;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .product-card .card-body {
+    flex: 1;
+  }
+  .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+
+
+
+<title>{% block title %} {{ profile.first_name }} {{ profile.last_name }} {% endblock %}</title>
+
+
+<div class="container mt-5">
+    
+    <div class="row d-flex justify-content-center">
+        
+        <div class="col-md-7">
+            
+            <div class="card p-3 py-4">
+                
+                <div class="text-center">
+                    {% if profile and profile.profile_image %}
+            <img src="{{ profile.profile_image.url }}" alt="{{ user_instance.username }}'s Profile Image"  width="100"  class="rounded-circle">
+            {% else %}
+            <img src="{% static 'images/default_profile_img.png' %}" alt="{{ user_instance.username }}" class="rounded-circle">
+            {% endif %}
+                </div>
+                
+                <div class="text-center mt-3">
+                    <h5 class="mt-2 mb-0">{{ profile.first_name }} {{ profile.last_name }}</h5>
+                        {%if profile.profession%}
+                    <span>{{ profile.profession }}</span><br>
+                        {%endif%}
+                    {% if profile.address%}
+                    <small>{{ profile.address }}, 
+                    {%endif%}
+                    {% if profile.city%}
+                    {{ profile.city }}, 
+                    {%endif%}
+                    {% if profile.state%}
+                     {{ profile.state }}</small>
+                     {%endif%}
+                    <div class="px-4 mt-1">
+                        <p class="fonts"> {{ profile.profile_bio }} </p>
+                    
+                    </div>
+                    
+                     <ul class="social-list">
+                       
+                            
+                                {% if profile.website_link|length > 0 %}
+                                <li><a href="{{ profile.website_link }}" target="new" class="fa fa-link me-3" style="font-size:30px; text-decoration:none"></a></li>
+                            {% endif %}
+                            
+                                {% if profile.facebook_link %}
+                                
+                                <li><a href="{{ profile.facebook_link }}" target="new" style="font-size:30px; text-decoration:none" class="fa-brands fa-facebook"></a></li>
+                                {% endif %}
+                                {% if profile.instagram_link %}
+                                <li><a href="{{ profile.instagram_link }}" target="new" class="fa fa-instagram me-1" style="font-size:30px; text-decoration:none"></a></li>
+                                {% endif %}
+                                {% if profile.linkedIn_link %}
+                                <li> <a href="{{ profile.linkedIn_link }}" target="new" class="fa fa-linkedin me-1" style="font-size:30px; text-decoration:none"></a></li>
+                                {% endif %}
+                           
+                        </ul>
+                    </ul>
+                    {% if user.is_authenticated and user != user_instance %}
+                    <button onclick="toggleChat()" class="btn btn-primary px-4 ms-3">Send Message</button>
+                    <div class="messages-dropdown mt-3">
+                        <textarea name="text" id="message" class="form-control" rows="4" required></textarea>
+                        <button type="button" class="btn btn-primary mt-2" onclick="sendMessage()">Send</button>
+                        <div class="card mt-3">
+                            <div class="card-body text-dark">
+                                {% for conversation in conversations %}
+                                    <p><strong><small>{{conversation.timestamp}}</small> {{ conversation.sender.username }}:</strong> {{ conversation.text }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <!-- Edit Profile Button for own profile -->
+                    <a href="{% url 'edit_profile' user_instance.username %}" class="btn btn-warning px-4 ms-3">Edit Profile</a>
+    
+                {% endif %}
+                    
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>
+<section>
+    <div class="container mt-5 text-center">
+       
+        <h4> Products listed</h4>
+        
+<div class="container">
+    <div class="row g-">
+      {% for product in products %}
+      <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-2">
+        <div class="card product-card">
+          {%if product.image%}
+          <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.name }}" style="width: 100%; height: 200px; object-fit: contain;">
+          {%else%}
+          <img src="{% static 'images/default_product_image.jpg' %}" class="card-img-top product-image" alt="{{ product.name }}" style="width: 100%; height: 200px; object-fit: contain;">
+          {%endif%}
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p><strong>Price:</strong> {{ product.product_price }}</p>
+            <p><strong>Category:</strong> {{ product.get_category_display }}</p>
+            <a href="{% url 'product_detail' pk=product.pk %}" class="btn btn-primary m-2">More</a>
+            <a href="{{ product.product_link }}" class="btn btn-primary">Buy</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+</section>
+
+
+{% endif %}
+{% endif %}
+<script>
+    function sendMessage() {
+        const message = document.getElementById('message').value;
+        fetch(`/send_message/{{ user_instance.username }}/`, {
+            method: 'POST',
+            body: new URLSearchParams({
+                'text': message,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            }),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Append the sent message to the chatbox
+                const chatbox = document.querySelector('.card-body');
+                chatbox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+                document.getElementById('message').value = '';  // Clear the textarea
+            } else {
+                alert('Error sending message.');
+            }
+        });
+    }
+    document.querySelector('.btn.btn-primary').addEventListener('click', sendMessage);
+
+    function toggleChat() {
+        const chatDropdown = document.querySelector('.messages-dropdown');
+        if (chatDropdown.style.display === "none" || chatDropdown.style.display === "") {
+            chatDropdown.style.display = "block";
+        } else {
+            chatDropdown.style.display = "none";
+        }
+    }
+    
+    </script>
+
+    
+    
+{% endblock %}
+
+
+

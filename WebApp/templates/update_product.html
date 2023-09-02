@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Update Product</div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.product_description.label_tag }}
+                            {{ form.product_description }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.product_price.label_tag }}
+                            {{ form.product_price }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.product_link.label_tag }}
+                            {{ form.product_link }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.image.label_tag }}
+                            {{ form.image }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.category.label_tag }}
+                            {{ form.category }}
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Update Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Style the input fields */
+    input[type="text"],
+    input[type="url"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+</style>
+{% endblock %}

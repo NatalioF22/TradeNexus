@@ -1,0 +1,36 @@
+<footer class="bg-dark text-white py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Section -->
+            <div class="col-md-4">
+                <h4>Contact Us</h4>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope"></i> Email: official.tradenexus@gmail.com</li>
+                    
+                </ul>
+            </div>
+  
+            <!-- Social Networks -->
+            <div class="col-md-4">
+                <h4>Follow Us</h4>
+                <a href="https://www.facebook.com/profile.php?id=61550540320613" class="text-white mr-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/_tradenexus_" class="text-white mr-3"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/tradenexus.official/" class="text-white mr-3"><i class="fab fa-instagram"></i></a>
+                <a href="linkedin.com/company/officialtradenexus" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+  
+            <!-- Shortcuts -->
+            <div class="col-md-4">
+                <h4>Shortcuts</h4>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'about_us' %}" class="text-white">About</a></li>
+                    <li><a href="#" class="text-white">Search</a></li>
+                    {% if user.is_authenticated == False%}
+                    <li><a href="{% url 'register'%}" class="text-white">Register</a></li>
+                    {%endif%}
+                    <li><a href="{% url 'product_add'%}" class="text-white">Add a Product</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </footer>
