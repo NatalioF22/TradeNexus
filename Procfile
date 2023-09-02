@@ -1,1 +1,2 @@
-web: gunicorn WebApp.wsgi:application
+web: gunicorn TradeNexus.wsgi 
+
